@@ -1,4 +1,4 @@
-FROM codecasts/alpine-3.7:php-7.2
+FROM alpine:3.7
 
 MAINTAINER Sacha Korban https://github.com/sachk
 label version="3.0.0" \
@@ -20,6 +20,10 @@ ENV MYSQL_DATA_DIR=/var/lib/mysql \
     MYSQL_PID_FILE=/var/run/mysqld/mysqld.pid \
     MYSQL_PORT=3306 \
     MYSQL_USER=mysql
+# add new php repo
+ADD https://php.codecasts.rocks/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
+RUN apk --update add ca-certificates
+RUN echo "@php https://php.codecasts.rocks/v3.7/php-7.2" >> /etc/apk/repositories
 
 RUN apk --no-cache update && \
     apk add --no-cache \
@@ -31,35 +35,33 @@ RUN apk --no-cache update && \
         git \
         mysql \
         mysql-client \
-        php \
-        php-apache2 \
-        php-curl \
-        php-dom \
-        php-gd \
-        php-gettext \
-        php-iconv \
-        php-json \
-        php-openssl \
-        php-pdo \
-        php-pdo_mysql \
-        php-phar \
-        php-session \
-        php-simplexml \
-        php-sockets \
-        php-xml \
-        php-xmlreader \
-        php-zlib \
+        php-common@php \
+        php-apache2@php \
+        php-curl@php \
+        php-dom@php \
+        php-gd@php \
+        php-gettext@php \
+        php-iconv@php \
+        php-json@php \
+        php-openssl@php \
+        php-pdo@php \
+        php-pdo_mysql@php \
+        php-phar@php \
+        php-session@php \
+        php-sockets@php \
+        php-xml@php \
+        php-xmlreader@php \
+        php-zlib@php \
         pwgen \
         supervisor \
         tzdata \
-        wget
+        wget && \
+        wget -O /${AMPACHE_VER}.zip https://github.com/ampache/ampache/archive/${AMPACHE_VER}.zip && \
+        ln /usr/bin/php7 /usr/bin/php
 
 WORKDIR /
 
-ADD root \
-    https://github.com/ampache/ampache/archive/${AMPACHE_VER}.tar.gz \
-    # ampache-${AMPACHE_VER}.tar.gz \
-    /
+ADD root /
 
 RUN /scripts/configure.sh
 
