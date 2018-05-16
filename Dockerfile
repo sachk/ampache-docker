@@ -57,8 +57,8 @@ RUN apk --no-cache update && \
 WORKDIR /
 
 ADD root \
-    https://github.com/ampache/ampache/archive/${AMPACHE_VER}.zip
-    # ampache-${AMPACHE_VER}.zip \
+    https://github.com/ampache/ampache/archive/${AMPACHE_VER}.tar.gz \
+    # ampache-${AMPACHE_VER}.tar.gz \
     /
 
 RUN /scripts/configure.sh
