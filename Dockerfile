@@ -1,7 +1,8 @@
-FROM alpine:3.4
-MAINTAINER Ingmar Delsink https://github.com/idelsink
-label version="2.0.0" \
-      description="Ampache docker image with Linux Alpine"
+FROM codecasts/alpine-3.7:php-7.2
+
+MAINTAINER Sacha Korban https://github.com/sachk
+label version="3.0.0" \
+      description="Ampache docker image built from Alpine Linux 3.7 with PHP 7"
 
 # Apache
 ENV APACHE_WEB_ROOT=/var/www/localhost \
@@ -10,7 +11,7 @@ ENV APACHE_WEB_ROOT=/var/www/localhost \
     APACHE_GROUP=www-data
 
 # Ampache
-ENV AMPACHE_VER=3.8.3 \
+ENV AMPACHE_VER=master \
     AMPACHE_WEB_DIR=${APACHE_WEB_ROOT}/ampache
 
 # MySQL
@@ -20,7 +21,6 @@ ENV MYSQL_DATA_DIR=/var/lib/mysql \
     MYSQL_PORT=3306 \
     MYSQL_USER=mysql
 
-# update, upgrade and install:
 RUN apk --no-cache update && \
     apk add --no-cache \
         apache2 \
@@ -31,30 +31,33 @@ RUN apk --no-cache update && \
         git \
         mysql \
         mysql-client \
-        php5 \
-        php5-apache2 \
-        php5-curl \
-        php5-dom \
-        php5-gd \
-        php5-gettext \
-        php5-iconv \
-        php5-json \
-        php5-openssl \
-        php5-pdo \
-        php5-pdo_mysql \
-        php5-phar \
-        php5-sockets \
-        php5-xml \
-        php5-xmlreader \
-        php5-zlib \
+        php \
+        php-apache2 \
+        php-curl \
+        php-dom \
+        php-gd \
+        php-gettext \
+        php-iconv \
+        php-json \
+        php-openssl \
+        php-pdo \
+        php-pdo_mysql \
+        php-phar \
+        php-session \
+        php-simplexml \
+        php-sockets \
+        php-xml \
+        php-xmlreader \
+        php-zlib \
         pwgen \
         supervisor \
+        tzdata \
         wget
 
 WORKDIR /
 
 ADD root \
-    https://github.com/ampache/ampache/archive/${AMPACHE_VER}.zip \
+    https://github.com/ampache/ampache/archive/${AMPACHE_VER}.zip
     # ampache-${AMPACHE_VER}.zip \
     /
 
